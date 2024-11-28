@@ -18,6 +18,8 @@ class Training extends Model
         'training_event_description',
         'training_event_schedule',
         'training_event_banner_img',
+        'note',
+        'budget_amount',
     ];
 
 
@@ -28,5 +30,19 @@ class Training extends Model
     public function galleries()
     {
         return $this->hasMany(Gallery::class);
+    }
+
+
+
+
+    public function volunteers()
+    {
+        return $this->belongsToMany(
+            Volunteer::class,
+            'training_members',  // Pivot table name
+            'training_id',       // Foreign key in pivot for this model
+            'volunteer_id'       // Foreign key in pivot for the related model
+        )->withPivot('designation', 'status') // Include pivot data
+          ->withTimestamps(); // Include timestamps from the pivot table
     }
 }

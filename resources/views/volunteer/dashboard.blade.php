@@ -11,31 +11,31 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
-                                src="{{$volunteer->profile_picture? $volunteer->profile_picture: asset('assets/image/dphoto.jpg')}}"
+                                src="{{$volunteer? $volunteer->profile_picture: asset('assets/image/dphoto.jpg')}}"
                                 alt="User profile picture">
                         </div>
 
-                        <h3 class="profile-username text-center">{{$volunteer->user->name}}</h3>
+                        <h3 class="profile-username text-center">{{$volunteer? $volunteer->user->name : ''}}</h3>
 
-                        <p class="text-muted text-center">{{$volunteer->designation}}</p>
-                        <p class="text-muted text-center">{{$volunteer->email}}</p>
-                        <p class=" text-center"><strong>Volunteer ID: </strong>{{$volunteer->volunteer_id? $volunteer->volunteer_id : 'Not Yet Approved'}}</p>
+                        <p class="text-muted text-center">{{$volunteer? $volunteer->designation : ''}}</p>
+                        <p class="text-muted text-center">{{$volunteer? $volunteer->email : ''}}</p>
+                        <p class=" text-center"><strong>Volunteer ID: </strong>{{$volunteer? $volunteer->volunteer_id? $volunteer->volunteer_id : 'Not Yet Approved' : ''}}</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>Mobile</b> <a class="float-right">{{$volunteer->phone_number}}</a>
+                                <b>Mobile</b> <a class="float-right">{{$volunteer? $volunteer->phone_number : ''}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Blood Group</b> <a class="float-right">{{$volunteer->blood_group}}</a>
+                                <b>Blood Group</b> <a class="float-right">{{$volunteer? $volunteer->blood_group : ''}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Joining Date</b> <a class="float-right">{{$volunteer->joining_date}}</a>
+                                <b>Joining Date</b> <a class="float-right">{{$volunteer? $volunteer->joining_date : ''}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Blood Donation Count</b> <a class="float-right">{{$volunteer->blood_donation_count}}</a>
+                                <b>Blood Donation Count</b> <a class="float-right">{{$volunteer? $volunteer->blood_donation_count : ''}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Review Points</b> <a class="float-right star">{{$volunteer->review_points}}</a>
+                                <b>Review Points</b> <a class="float-right star">{{$volunteer? $volunteer->review_points : ''}}</a>
                             </li>
                         </ul>
 
@@ -215,7 +215,48 @@
                             <div class="tab-pane" id="training">
                                 <!-- Post -->
 
+                                <h4><b>Internal Trainings</b></h4>
+                                <hr>
+                                <div class="internal_trainings">
+                                    @php
+                                    $internal_trainings = $internal_trainings->unique('training_id');
+                                    @endphp
+                                    @if($internal_trainings->count() <= 0)
+                                        <p class="font-italic">No Training Available.......</p>
+                                        @endif
+                                        @foreach($internal_trainings as $training)
+                                        <div class="post">
+                                            <div class="user-block">
 
+                                                <span class="username">
+                                                    <h5 href="#"><i class="fa fa-briefcase"></i><b class="ml-2">{{$training->training_event_name}}</b></h5>
+                                                    <!-- <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a> -->
+                                                </span>
+                                                <span class="description">Attend Date : {{$training->created_at}} | Duration : {{$training->training_event_duration}} | Organization: BDRCS</span>
+                                            </div>
+                                            <!-- /.user-block -->
+                                            <p>
+                                                Lorem ipsum represents a long-held tradition for designers,
+                                                
+                                            </p>
+
+                                        </div>
+                                        @endforeach
+
+                                </div>
+
+
+
+                                <div id="dynamic-internalfields-container">
+                                    <!-- Dynamic fields will be added here -->
+                                </div>
+
+
+                                <button type="button" class="btn btn-primary mt-2" id="add-internaltraining-button">Add New Training +</button>
+
+                                <br>
+                                <hr>
+                                
                                 <h4><b>External Trainings</b></h4>
                                 <hr>
                                 <div class="external_trainings">
@@ -258,46 +299,7 @@
 
 
 
-<hr>
-
-                                <h4><b>Internal Trainings</b></h4>
                                 <hr>
-                                <div class="internal_trainings">
-                                    @if($external_trainings->count() <= 0)
-                                        <p class="font-italic">No Training Available.......</p>
-                                        @endif
-                                        @foreach($external_trainings as $training)
-                                        <div class="post">
-                                            <div class="user-block">
-
-                                                <span class="username">
-                                                    <h5 href="#"><i class="fa fa-briefcase"></i><b class="ml-2">{{$training->training_name}}</b></h5>
-                                                    <!-- <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a> -->
-                                                </span>
-                                                <span class="description">Attend Date : {{$training->attend_date}} | Duration : {{$training->duration}} | Organization: {{$training->organization_name}}</span>
-                                            </div>
-                                            <!-- /.user-block -->
-                                            <p>
-                                                Lorem ipsum represents a long-held tradition for designers,
-                                                typographers and the like. Some people hate it and argue for
-                                                its demise, but others ignore the hate as they create awesome
-                                                tools to help create filler text for everyone from bacon lovers
-                                                to Charlie Sheen fans.
-                                            </p>
-
-                                        </div>
-                                        @endforeach
-
-                                </div>
-
-
-
-                                <div id="dynamic-fields-container">
-                                    <!-- Dynamic fields will be added here -->
-                                </div>
-
-
-                                <button type="button" class="btn btn-primary mt-2" id="add-training-button">Add New Training +</button>
 
 
                             </div>

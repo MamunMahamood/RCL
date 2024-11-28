@@ -28,10 +28,20 @@ class Volunteer extends Model
     ];
 
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
 
-    
+    public function trainings()
+    {
+        return $this->belongsToMany(
+            Training::class,
+            'training_members',  // Pivot table name
+            'volunteer_id',      // Foreign key in pivot for this model
+            'training_id'        // Foreign key in pivot for the related model
+        )->withPivot('designation', 'status') // Include pivot data
+            ->withTimestamps(); // Include timestamps from the pivot table
+    }
 }

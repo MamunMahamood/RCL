@@ -25,7 +25,8 @@ class VolunteerController extends Controller
         $user_volunteer = Volunteer::where('user_id', Auth::user()->id)->first();
         $volunteer = $user_volunteer? $user_volunteer : null;
         $external_trainings = ExternalTraining::where('volunteer_id', Auth::user()->id)->get();
-        return view('volunteer.dashboard', $data, compact('volunteer', 'external_trainings'));
+        $internal_trainings = $user_volunteer->trainings()->get();
+        return view('volunteer.dashboard', $data, compact('volunteer', 'external_trainings', 'internal_trainings'));
     }
 
     public function create_profile(){
@@ -52,10 +53,11 @@ class VolunteerController extends Controller
             $file = '/assets/img/' . $filename;
         }
 
-        Volunteer::create([
+        $volunteer = Volunteer::where('user_id', Auth::user()->id)->first();
+
+        $volunteer->update([
             'designation' => request()->designation,
             'unit_id' => request()->unit_id,
-            'user_id' => Auth::user()->id,
             'phone_number' => request()->phone_number,
             'joining_date' => request()->joining_date,
             'email' => request()->email,

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Trainer;
 use App\Models\Training;
-
+use App\Models\TrainingMember;
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -26,11 +27,13 @@ class TrainingController extends Controller
         $data['header_right'] = 'Back to Training Event List';
         $data['header_right_route'] = 'training_events';
         $trainers = Trainer::all();
-        return view('training.create', $data, compact('trainers'));
+        $volunteers = Volunteer::all();
+        return view('training.create', $data, compact('trainers', 'volunteers'));
     }
 
     public function training_event_store()
     {
+        // dd(request()->input());
         // dd(request()->input('training_event_trainers'));
         request()->validate([
             'training_event_name' => 'required|max:255',
@@ -59,10 +62,28 @@ class TrainingController extends Controller
             'training_event_description' => request()->training_event_description,
             'training_event_schedule' => request()->training_event_schedule,
             'training_event_banner_img' => $file,
+            'note'=>request()->note,
+            'budget_amount'=> request()->budget_amount,
         ]);
 
         foreach (request()->input('training_event_trainers') as $trainer_id) {
-            $training_event->trainers()->attach($trainer_id);
+            $trainer = Trainer::findorfail($trainer_id);
+            TrainingMember::create([
+                'training_id'=>$training_event->id,
+                'volunteer_id'=> $trainer->volunteer_id,
+                'designation'=> 'Trainer',
+                'status'=> 'active',
+            ]);
+        }
+
+        $designations = request()->input('designation');
+        foreach(request()->input('volunteer_id') as $index=>$volunteer_id){
+            TrainingMember::create([
+                'training_id'=>$training_event->id,
+                'volunteer_id'=> $volunteer_id,
+                'designation'=> $designations[$index],
+                'status'=> 'active',
+            ]);
         }
 
 
@@ -80,7 +101,9 @@ class TrainingController extends Controller
         $data['header_right_route'] = 'training_events';
         $trainers = $training_event->trainers()->get();
         $gallery = $training_event->galleries()->first();
-        return view('training.show', $data, compact('training_event', 'trainers', 'gallery'));
+        $training_members = TrainingMember::where('training_id', $training_event->id)->get();
+        $total_training_members_count = TrainingMember::getMembers()->count();
+        return view('training.show', $data, compact('training_event', 'trainers', 'gallery', 'training_members', 'total_training_members_count'));
     }
 
 

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->text('training_event_description')->nullable();
             $table->string('training_event_banner_img')->nullable();
             $table->string('training_event_schedule')->nullable();
+            $table->text('note')->nullable();
+            $table->decimal('budget_amount', 15, 2);
             $table->timestamps();
         });
     }

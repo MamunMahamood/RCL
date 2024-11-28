@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Volunteer;
 
 class AuthController extends Controller
 {
@@ -26,11 +27,16 @@ class AuthController extends Controller
         
 
         // Create a new user
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
            
+        ]);
+
+
+        Volunteer::create([
+            'user_id'=> $user->id,
         ]);
 
         // Redirect back with success message

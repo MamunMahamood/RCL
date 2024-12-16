@@ -14,6 +14,7 @@
                         <th style="width: 10px">#</th>
                         <th>Name</th>
                         <th>Designation</th>
+                        <th>Role</th>
                         <th>volunteer Email</th>
                         <th>Phone Number</th>
                         <th>Blood Group</th>
@@ -28,14 +29,21 @@
                         <td>{{$index+1}}</td>
                         <td><a href="{{route('volunteer.show', ['id'=>$volunteer->id])}}">{{$volunteer->user->name}}</a></td>
                         <td>{{$volunteer->designation}}</td>
+                        <td>{{$volunteer->user->is_admin == 1? 'Admin':'Volunteer'}}</td>
                         <td>{{$volunteer->email}}</td>
                         <td>{{$volunteer->phone_number}}</td>
                         <td>{{$volunteer->blood_group}}</td>
                         <td><span>{{ number_format($volunteer->review_points, 1) }}</span></td>
                         <td>
-                            <div>
-                                <a class="badge badge-primary" href="{{route('volunteer.show_performance', ['id'=>$volunteer->id])}}">Detail</a>
-                                <a class="badge badge-danger" href="">Post OFF</a>
+                            <div class="d-flex">
+                                <a class="badge badge-primary" href="{{route('volunteer.show_performance', ['id'=>$volunteer->id])}}">Detail</a> 
+                                @if($volunteer->user->is_admin == 2) 
+                                <a class="badge badge-danger ml-2" href="">Unset Admin</a>
+                                @elseif($volunteer->user->is_admin == 0)
+                                <a class="badge badge-success ml-2" href="{{route('volunteer.approve_volunteer', ['id'=>$volunteer->id])}}">Approve Volunteer</a>
+                                @else
+                                <a class="badge badge-success ml-2" href="">Set Admin</a>
+                                @endif 
                             </div>
                         </td>
                         <!-- <td><span class="badge bg-danger">55%</span></td> -->

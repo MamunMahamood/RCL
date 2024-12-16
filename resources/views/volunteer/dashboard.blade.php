@@ -1,4 +1,12 @@
 @extends('layouts.app')
+@section('style')
+<link rel="stylesheet" href="{{asset('assets/chosen/chosen.min.css')}}" />
+<style>
+    
+</style>
+
+
+@endsection
 @section('content')
 
 <section class="content">
@@ -11,7 +19,7 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
-                                src="{{$volunteer? $volunteer->profile_picture: asset('assets/image/dphoto.jpg')}}"
+                                src="{{$volunteer->profile_picture? $volunteer->profile_picture: asset('assets/image/dphoto.jpg')}}"
                                 alt="User profile picture">
                         </div>
 
@@ -36,6 +44,10 @@
                             </li>
                             <li class="list-group-item">
                                 <b>Review Points</b> <a class="float-right star">{{$volunteer? $volunteer->review_points : ''}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <input type="hidden" id="copyLinkInput" value="{{ route('volunteer.show_public', ['id'=>$volunteer->id]) }}" readonly>
+                                <button class="btn btn-sm btn-primary" id="copyLinkButton">Copy profile Link</button>
                             </li>
                         </ul>
 
@@ -91,136 +103,22 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#training" data-toggle="tab">Training Programs</a></li>
+
+                            <li class="nav-item"><a class="nav-link active" href="#training" data-toggle="tab">Training Programs</a></li>
                             <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                         </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="active tab-pane" id="activity">
-                                <!-- Post -->
-                                <div class="post">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
-                                        <span class="username">
-                                            <a href="#">Jonathan Burke Jr.</a>
-                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                                        </span>
-                                        <span class="description">Shared publicly - 7:30 PM today</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore the hate as they create awesome
-                                        tools to help create filler text for everyone from bacon lovers
-                                        to Charlie Sheen fans.
-                                    </p>
 
-                                    <p>
-                                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                                        <span class="float-right">
-                                            <a href="#" class="link-black text-sm">
-                                                <i class="far fa-comments mr-1"></i> Comments (5)
-                                            </a>
-                                        </span>
-                                    </p>
-
-                                    <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
-                                </div>
-                                <!-- /.post -->
-
-                                <!-- Post -->
-                                <div class="post clearfix">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
-                                        <span class="username">
-                                            <a href="#">Sarah Ross</a>
-                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                                        </span>
-                                        <span class="description">Sent you a message - 3 days ago</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore the hate as they create awesome
-                                        tools to help create filler text for everyone from bacon lovers
-                                        to Charlie Sheen fans.
-                                    </p>
-
-                                    <form class="form-horizontal">
-                                        <div class="input-group input-group-sm mb-0">
-                                            <input class="form-control form-control-sm" placeholder="Response">
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-danger">Send</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- /.post -->
-
-                                <!-- Post -->
-                                <div class="post">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image">
-                                        <span class="username">
-                                            <a href="#">Adam Jones</a>
-                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                                        </span>
-                                        <span class="description">Posted 5 photos - 5 days ago</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <div class="row mb-3">
-                                        <div class="col-sm-6">
-                                            <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo">
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <img class="img-fluid mb-3" src="../../dist/img/photo2.png" alt="Photo">
-                                                    <img class="img-fluid" src="../../dist/img/photo3.jpg" alt="Photo">
-                                                </div>
-                                                <!-- /.col -->
-                                                <div class="col-sm-6">
-                                                    <img class="img-fluid mb-3" src="../../dist/img/photo4.jpg" alt="Photo">
-                                                    <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo">
-                                                </div>
-                                                <!-- /.col -->
-                                            </div>
-                                            <!-- /.row -->
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- /.row -->
-
-                                    <p>
-                                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                                        <span class="float-right">
-                                            <a href="#" class="link-black text-sm">
-                                                <i class="far fa-comments mr-1"></i> Comments (5)
-                                            </a>
-                                        </span>
-                                    </p>
-
-                                    <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
-                                </div>
-                                <!-- /.post -->
-                            </div>
                             <!-- /.tab-pane -->
-                            <div class="tab-pane" id="training">
+                            <div class="tab-pane active" id="training">
                                 <!-- Post -->
 
                                 <h4><b>Internal Trainings</b></h4>
                                 <hr>
                                 <div class="internal_trainings">
-                                    @php
-                                    $internal_trainings = $internal_trainings->unique('training_id');
-                                    @endphp
+
                                     @if($internal_trainings->count() <= 0)
                                         <p class="font-italic">No Training Available.......</p>
                                         @endif
@@ -232,12 +130,12 @@
                                                     <h5 href="#"><i class="fa fa-briefcase"></i><b class="ml-2">{{$training->training_event_name}}</b></h5>
                                                     <!-- <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a> -->
                                                 </span>
-                                                <span class="description">Attend Date : {{$training->created_at}} | Duration : {{$training->training_event_duration}} | Organization: BDRCS</span>
+                                                <span class="description">Attend Date : {{$training->created_at}} | Duration : {{$training->duration}} | Organization: BDRCS</span>
                                             </div>
                                             <!-- /.user-block -->
                                             <p>
                                                 Lorem ipsum represents a long-held tradition for designers,
-                                                
+
                                             </p>
 
                                         </div>
@@ -256,7 +154,7 @@
 
                                 <br>
                                 <hr>
-                                
+
                                 <h4><b>External Trainings</b></h4>
                                 <hr>
                                 <div class="external_trainings">
@@ -369,7 +267,7 @@
 
 
 @section('script')
-
+<script src="{{asset('assets/chosen/chosen.jquery.min.js')}}"></script>
 <script>
     document.getElementById('add-training-button').addEventListener('click', function() {
         // Get the container where fields will be added
@@ -461,6 +359,10 @@
                 </span>
             </div>
             <!-- /.user-block -->
+            <p>
+                                                Lorem ipsum represents a long-held tradition for designers,
+
+                                            </p>
            
         </div>
     `;
@@ -475,6 +377,133 @@
 
 
     });
+
+
+
+
+    document.getElementById('add-internaltraining-button').addEventListener('click', function() {
+        const internalcontainer = document.getElementById('dynamic-internalfields-container');
+
+        const internaltrainingFields = document.createElement('div');
+        internaltrainingFields.classList.add('internaltraining-fields', 'mb-3');
+
+        // Add the input fields dynamically
+        internaltrainingFields.innerHTML = `
+        <div class="card p-3">
+        <div class="form-group">
+            <label for="internal_trainings">Training Event internal_trainings</label>
+                <select class="form-control" name="training_id" id="internal_trainings" data-placeholder="Select internal_training">
+                    @foreach($total_trainings as $internal_training)
+                    <option value="{{$internal_training->id}}">{{$internal_training->training_event_name}}</option>
+                    @endforeach
+                </select>
+        </div>
+        <div class="form-group">
+            <label for="designation">Designation</label>
+            <input id="designation" type="text" name="designation" class="form-control" placeholder="Enter designation">
+        </div>
+        <input type="" name="volunteer_id" value="{{$volunteer->id}}" id="volunteer_id">
+        <input type="" name="status" value="applied" id="status">
+        <div class="card-footer">
+        <button type="button" class="float-left btn btn-danger remove-internaltraining-button">Remove</button>
+        <button type="button" class="float-right btn btn-primary save-internaltraining-button">Save</button>
+        </div>
+        </div>
+        <hr> `;
+
+        // Append the new fields to the container
+        internalcontainer.appendChild(internaltrainingFields);
+
+        // Add event listener to the remove button
+        internaltrainingFields.querySelector('.remove-internaltraining-button').addEventListener('click', function() {
+            internaltrainingFields.remove();
+        });
+
+        $('#internal_trainings').chosen();
+
+
+
+        internaltrainingFields.querySelector('.save-internaltraining-button').addEventListener('click', function() {
+
+            let training_id = $('#internal_trainings').val();
+            let designation = $('#designation').val();
+            let volunteer_id = $('#volunteer_id').val();
+            let status = $('#status').val();
+
+
+
+            $.ajax({
+                url: "{{route('volunteer.interternal_training.store')}}", // Update with your route
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token
+                    training_id: training_id,
+                    designation: designation,
+                    volunteer_id: volunteer_id,
+                    status: status,
+                },
+                success: function(response) {
+                    // alert('success');
+                    tables_of_trainings(response.internal_trainings);
+                    // location.reload(); // Optional: Reload the page or handle UI update
+                },
+                error: function(xhr) {
+                    alert('An error occurred while saving trainings!');
+                },
+            });
+
+
+            function tables_of_trainings(trainings) {
+                html = ``;
+
+                trainings.map((training, index) => {
+                    html += `
+        <div class="post">
+            <div class="user-block">
+                <span class="username">
+                    <h5>
+                        <i class="fa fa-briefcase"></i>
+                        <b class="ml-2">${training.training_event_name}</b>
+                    </h5>
+                </span>
+                <span class="description">
+                    Attend Date: ${training.created_at} | Duration: ${training.training_event_duration} | Organization: BDRCS
+                </span>
+            </div>
+            <!-- /.user-block -->
+
+            <p>
+                                                Lorem ipsum represents a long-held tradition for designers,
+
+                                            </p>
+           
+        </div>
+    `;
+                });
+
+
+                $('.internal_trainings').html(html);
+                internaltrainingFields.remove();
+            }
+
+
+        });
+    });
 </script>
+<script>
+    document.getElementById('copyLinkButton').addEventListener('click', async function () {
+        try {
+            const copyText = document.getElementById('copyLinkInput').value;
+            await navigator.clipboard.writeText(copyText);
+
+            // Show confirmation
+            let copyElement = document.querySelector('#copyLinkButton');
+            copyElement.innerText = 'Copied';
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    });
+</script>
+
 
 @endsection

@@ -59,7 +59,7 @@
                   <!-- <img src="" class="img-circle elevation-2" alt="User Image"> -->
               </div>
               <div class="info">
-                  <a href="#" class="d-block">{{Auth::user()->name}}</a>
+                  <a href="#" class="d-block">{{Auth::user()->name}} {{Auth::user()->is_admin == 2? '(admin)': ''}}</a>
               </div>
           </div>
 
@@ -101,6 +101,15 @@
                   </li> -->
                   <li class="nav-item">
                       <a href="{{route('volunteer.dashboard')}}" class="nav-link {{ Request::segment(2) == 'dashboard'? 'active' : '' }}">
+                          <i class="nav-icon fas fa-th"></i>
+                          <p>
+                              Volunteer Profile
+                              <!-- <span class="right badge badge-danger">New</span> -->
+                          </p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{route('dashboard')}}" class="nav-link">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
                               Dashboard

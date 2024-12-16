@@ -7,9 +7,10 @@
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a class="btn btn-primary" href="{{route($header_right_route)}}">{{$header_right}}</a></li>
-          <!-- <li class="breadcrumb-item active">Dashboard v1</li> -->
+         
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
+    @include('layouts._massage')
   </div><!-- /.container-fluid -->
 </div>

@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Unit;
 use App\Models\Volunteer;
+use App\Models\Trainer;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Training;
+use App\Models\TrainingMember;
 
 class VolunteerController extends Controller
 {
@@ -26,7 +29,8 @@ class VolunteerController extends Controller
         $volunteer = $user_volunteer? $user_volunteer : null;
         $external_trainings = ExternalTraining::where('volunteer_id', Auth::user()->id)->get();
         $internal_trainings = $user_volunteer->trainings()->get();
-        return view('volunteer.dashboard', $data, compact('volunteer', 'external_trainings', 'internal_trainings'));
+        $total_trainings = Training::all();
+        return view('volunteer.dashboard', $data, compact('volunteer', 'external_trainings', 'internal_trainings', 'total_trainings'));
     }
 
     public function create_profile(){
@@ -75,7 +79,18 @@ class VolunteerController extends Controller
         $data['header_right'] = 'Back to Volunteers Leader Board List';
         $data['header_right_route'] = 'volunteer.index';
         $volunteer = Volunteer::findorfail($id);
-        return view('volunteer.dashboard', $data, compact('volunteer'));
+        $external_trainings = ExternalTraining::where('volunteer_id', $volunteer->id)->get();
+        $internal_trainings = $volunteer->trainings()->get();
+        $total_trainings = Training::all();
+        return view('volunteer.volunteer_profile', $data, compact('volunteer', 'external_trainings', 'internal_trainings', 'total_trainings'));
+    }
+
+    public function show_public($id){
+        $volunteer = Volunteer::findorfail($id);
+        $external_trainings = ExternalTraining::where('volunteer_id', $volunteer->id)->get();
+        $internal_trainings = $volunteer->trainings()->get();
+        $total_trainings = Training::all();
+        return view('volunteer.volunteer_public', compact('volunteer', 'external_trainings', 'internal_trainings', 'total_trainings'));
     }
 
 
@@ -84,6 +99,47 @@ class VolunteerController extends Controller
         $data['header_right'] = 'Back to Volunteers Leader Board List';
         $data['header_right_route'] = 'volunteer.index';
         $volunteer = Volunteer::findorfail($id);
-        return view('volunteer.dashboard', $data, compact('volunteer'));
+        return view('volunteer.performance', $data, compact('volunteer'));
+    }
+
+
+
+
+    public function internal_training_store(){
+        if(!empty(request())){
+            TrainingMember::create([
+                'volunteer_id'=>request()->volunteer_id,
+                'training_id'=>request()->training_id,
+                'designation'=>request()->designation,
+                'status'=>request()->status,
+            ]);
+        }
+        $volunteer = Volunteer::findorfail(request()->volunteer_id);
+        $internal_trainings = $volunteer->trainings()->get();
+        return response()->json(['status'=>true, 'message' => 'Internal Training is Saved', 'internal_trainings'=>$internal_trainings,]);
+    }
+
+    public function approve_volunteer($id){
+        $volunteer = Volunteer::findorfail($id);
+        $user = $volunteer->user;
+        $user->is_admin = 1;
+        $user->save();
+
+        $volunteer->volunteer_id = Volunteer::generateVolunteerId();
+        $volunteer->save();
+        return redirect()->back();
+    }
+
+    public function central_dashboard(){
+        $data['header_left'] = "Dashboard";
+        $data['header_right'] = '';
+        $data['header_right_route'] = 'dashboard';
+        $volunteers = Volunteer::all();
+        $total_programs = Training::all();
+        $total_units = Unit::all();
+        $total_admins = User::where('is_admin',2)->get();
+        $total_trainers = Trainer::all();
+        return view('volunteer.central_dashboard', $data, compact('volunteers', 'total_programs', 'total_units', 'total_admins', 'total_trainers'));
+    
     }
 }

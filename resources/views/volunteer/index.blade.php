@@ -38,11 +38,11 @@
                             <div class="d-flex">
                                 <a class="badge badge-primary" href="{{route('volunteer.show_performance', ['id'=>$volunteer->id])}}">Detail</a> 
                                 @if($volunteer->user->is_admin == 2) 
-                                <a class="badge badge-danger ml-2" href="">Unset Admin</a>
+                                <a class="badge badge-danger ml-2" href="{{route('volunteer.unset_admin', ['id'=>$volunteer->id])}}">Unset Admin</a>
                                 @elseif($volunteer->user->is_admin == 0)
                                 <a class="badge badge-success ml-2" href="{{route('volunteer.approve_volunteer', ['id'=>$volunteer->id])}}">Approve Volunteer</a>
                                 @else
-                                <a class="badge badge-success ml-2" href="">Set Admin</a>
+                                <a class="badge badge-success ml-2" href="{{route('volunteer.set_admin', ['id'=>$volunteer->id])}}">Set Admin</a>
                                 @endif 
                             </div>
                         </td>

@@ -44,6 +44,7 @@ Route::middleware(['isVolunteer'])->group(function () {
             Route::post('user/trainers/new', [TrainerController::class, 'trainer_store'])->name('trainer.store');
             Route::get('user/trainers/{id}', [TrainerController::class, 'trainer_show'])->name('trainer.show');
             Route::get('volunteer/volunteers/{id}', [VolunteerController::class, 'show'])->name('volunteer.show');
+
     
     
     
@@ -54,6 +55,8 @@ Route::middleware(['isVolunteer'])->group(function () {
     
             Route::post('internal_training_store', [VolunteerController::class, 'internal_training_store'])->name('volunteer.interternal_training.store');
             Route::get('approve_volunteer/{id}', [VolunteerController::class, 'approve_volunteer'])->name('volunteer.approve_volunteer');
+            Route::get('set_admin/{id}', [VolunteerController::class, 'set_admin'])->name('volunteer.set_admin');
+            Route::get('unset_admin/{id}', [VolunteerController::class, 'unset_admin'])->name('volunteer.unset_admin');
         });
 
     });

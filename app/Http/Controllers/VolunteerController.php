@@ -27,7 +27,7 @@ class VolunteerController extends Controller
         $data['header_right_route'] = 'volunteer.create_profile';
         $user_volunteer = Volunteer::where('user_id', Auth::user()->id)->first();
         $volunteer = $user_volunteer? $user_volunteer : null;
-        $external_trainings = ExternalTraining::where('volunteer_id', Auth::user()->id)->get();
+        $external_trainings = ExternalTraining::where('volunteer_id', $volunteer->id)->get();
         $internal_trainings = $user_volunteer->trainings()->get();
         $total_trainings = Training::all();
         return view('volunteer.dashboard', $data, compact('volunteer', 'external_trainings', 'internal_trainings', 'total_trainings'));
@@ -127,6 +127,22 @@ class VolunteerController extends Controller
 
         $volunteer->volunteer_id = Volunteer::generateVolunteerId();
         $volunteer->save();
+        return redirect()->back();
+    }
+
+    public function set_admin($id){
+        $volunteer = Volunteer::findorfail($id);
+        $user = $volunteer->user;
+        $user->is_admin = 2;
+        $user->save();
+        return redirect()->back();
+    }
+
+    public function unset_admin($id){
+        $volunteer = Volunteer::findorfail($id);
+        $user = $volunteer->user;
+        $user->is_admin = 1;
+        $user->save();
         return redirect()->back();
     }
 

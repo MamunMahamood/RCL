@@ -37,6 +37,7 @@
                         <td>
                             <div class="d-flex">
                                 <a class="badge badge-primary" href="{{route('volunteer.show_performance', ['id'=>$volunteer->id])}}">Detail</a> 
+                                @if(Auth::user()->is_admin == 2)
                                 @if($volunteer->user->is_admin == 2) 
                                 <a class="badge badge-danger ml-2" href="{{route('volunteer.unset_admin', ['id'=>$volunteer->id])}}">Unset Admin</a>
                                 @elseif($volunteer->user->is_admin == 0)
@@ -44,6 +45,7 @@
                                 @else
                                 <a class="badge badge-success ml-2" href="{{route('volunteer.set_admin', ['id'=>$volunteer->id])}}">Set Admin</a>
                                 @endif 
+                                @endif
                             </div>
                         </td>
                         <!-- <td><span class="badge bg-danger">55%</span></td> -->

@@ -48,7 +48,7 @@
             <div class="content-header bg-danger d-flex">
                 <img src="{{asset('assets/dist/img/logo.png')}}" alt="" height="100" width="100">
                 <div style="margin-left:10px;" class="mt-1">
-                <h1 style="font-size: 4rem;">Bangladesh Red Crecent Socity</h1>
+                <h1 style="font-size: 4rem;">Bangladesh Red Crecent Society</h1>
                 <h4>Volunteer Profile</h4>
                 </div>
             </div>

@@ -119,7 +119,7 @@
                                             <div class="user-block">
 
                                                 <span class="username">
-                                                    <h5 href="#"><i class="fa fa-briefcase"></i><b class="ml-2">{{$training->training_event_name}}</b></h5>
+                                                    <a href="#"><i class="fa fa-briefcase"></i><b class="ml-2">{{$training->training_event_name}}</b></a>
                                                     <!-- <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a> -->
                                                 </span>
                                                 <span class="description">Attend Date : {{$training->created_at}} | Duration : {{$training->duration}} | Organization: BDRCS</span>

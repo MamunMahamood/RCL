@@ -2,7 +2,7 @@
 @section('style')
 <link rel="stylesheet" href="{{asset('assets/chosen/chosen.min.css')}}" />
 <style>
-    
+
 </style>
 
 
@@ -127,7 +127,7 @@
                                             <div class="user-block">
 
                                                 <span class="username">
-                                                    <h5 href="#"><i class="fa fa-briefcase"></i><b class="ml-2">{{$training->training_event_name}}</b></h5>
+                                                    <a href="{{route('training_event_show', ['id'=>$training->id])}}"><i class="fa fa-briefcase"></i><b class="ml-2">{{$training->training_event_name}}</b></a>
                                                     <!-- <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a> -->
                                                 </span>
                                                 <span class="description">Attend Date : {{$training->created_at}} | Duration : {{$training->duration}} | Organization: BDRCS</span>
@@ -150,7 +150,12 @@
                                 </div>
 
 
-                                <button type="button" class="btn btn-primary mt-2" id="add-internaltraining-button">Add New Training +</button>
+                                @if(Auth::user()->is_admin == 0)
+                                <button type="button" class="btn btn-primary mt-2" id="add-internaltraining-button" disabled>You are not volunteer yet</button>
+                               @else
+                               <button type="button" class="btn btn-primary mt-2" id="add-internaltraining-button">Add New Training +</button>
+                               @endif
+                                
 
                                 <br>
                                 <hr>
@@ -192,7 +197,11 @@
                                 </div>
 
 
-                                <button type="button" class="btn btn-primary mt-2" id="add-training-button">Add New Training +</button>
+                               @if(Auth::user()->is_admin == 0)
+                               <button type="button" class="btn btn-primary mt-2" id="add-training-button" disabled>You are not Volunteer Yet</button>
+                               @else
+                               <button type="button" class="btn btn-primary mt-2" id="add-training-button">Add New Training +</button>
+                               @endif
 
 
 
@@ -205,43 +214,24 @@
 
                             <div class="tab-pane" id="settings">
                                 <form class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                    <h4><b class="text-muted">Volunteer Password Change</b></h4><hr>
+                                    <div class="form-group row mt-2">
+                                    
+                                        <label for="inputName" class="col-sm-2 col-form-label">Old Password</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                            <input type="email" class="form-control" id="inputName" placeholder="Password">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                        <label for="inputEmail" class="col-sm-2 col-form-label">New Password</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                            <input type="email" class="form-control" id="inputEmail" placeholder="Password">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
+                                        <label for="inputName2" class="col-sm-2 col-form-label">Confirm New Password</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                                        <div class="col-sm-10">
-                                            <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="offset-sm-2 col-sm-10">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                                                </label>
-                                            </div>
+                                            <input type="text" class="form-control" id="inputName2" placeholder="Password">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -271,6 +261,13 @@
 <script>
     document.getElementById('add-training-button').addEventListener('click', function() {
         // Get the container where fields will be added
+        
+        // let addButton = document.querySelector('#add-training-button');
+        // if (addButton) {
+        //     alert('You are not Volunteer');
+        //     // addButton.disabled = true;
+        // }
+       
         const container = document.getElementById('dynamic-fields-container');
 
         // Create a new div for training fields
@@ -402,8 +399,8 @@
             <label for="designation">Designation</label>
             <input id="designation" type="text" name="designation" class="form-control" placeholder="Enter designation">
         </div>
-        <input type="" name="volunteer_id" value="{{$volunteer->id}}" id="volunteer_id">
-        <input type="" name="status" value="applied" id="status">
+        <input type="hidden" name="volunteer_id" value="{{$volunteer->id}}" id="volunteer_id">
+        <input type="hidden" name="status" value="applied" id="status">
         <div class="card-footer">
         <button type="button" class="float-left btn btn-danger remove-internaltraining-button">Remove</button>
         <button type="button" class="float-right btn btn-primary save-internaltraining-button">Save</button>
@@ -491,7 +488,7 @@
     });
 </script>
 <script>
-    document.getElementById('copyLinkButton').addEventListener('click', async function () {
+    document.getElementById('copyLinkButton').addEventListener('click', async function() {
         try {
             const copyText = document.getElementById('copyLinkInput').value;
             await navigator.clipboard.writeText(copyText);

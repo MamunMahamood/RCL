@@ -95,14 +95,14 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            
+
                             <li class="nav-item"><a class="nav-link active" href="#training" data-toggle="tab">Training Programs</a></li>
-                            <!-- <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li> -->
+                            <!-- <li class="nav-item"><a class="nav-link" href="#stat" data-toggle="tab">Stat Bar</a></li> -->
                         </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
-                            
+
                             <!-- /.tab-pane -->
                             <div class="tab-pane active" id="training">
                                 <!-- Post -->
@@ -110,7 +110,7 @@
                                 <h4><b>Internal Trainings</b></h4>
                                 <hr>
                                 <div class="internal_trainings">
-                                    
+
                                     @if($internal_trainings->count() <= 0)
                                         <p class="font-italic">No Training Available.......</p>
                                         @endif
@@ -137,10 +137,10 @@
 
 
 
-                                
 
 
-                             
+
+
 
                                 <br>
                                 <hr>
@@ -177,7 +177,7 @@
 
 
 
-                               
+
 
 
 
@@ -185,10 +185,31 @@
                                 <hr>
 
 
+                                <div class="">
+                                    <div class="card">
+                                        <div class="card-header">{{$volunteer->user->name}}'s Statistics</div>
+                                        <div class="card-body">
+                                            <p><b class="text-muted">Rating</b> : {{$volunteer->review_points}}</p>
+                                            <p><b class="text-muted">Training Programs Attended</b> : {{$volunteer->trainings()->count()}}</p>
+                                            <p><b class="text-muted">Rescue Programs Attended</b> : {{2}}</p>
+                                            <p><b class="text-muted">Camp Programs Attended</b> : {{3}}</p>
+                                            <p><b class="text-muted">Special Programs Attended</b> : {{4}}</p>
+                                            <hr>
+                                            <p><b class="text-muted">Total Programs Attended</b> : {{$volunteer->trainings()->count()+2+3+4}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                                </div>
+
+
+
                             </div>
+        
                             <!-- /.tab-pane -->
 
-                            
+
                             <!-- /.tab-pane -->
                         </div>
                         <!-- /.tab-content -->
@@ -205,6 +226,76 @@
 
 
 @section('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var xValues = ["Trainings ({{$volunteer->trainings()->count()}})", "Rescues (2)", "Camps (3)", "Special Programms (4)"];
+        var yValues = ['{{$volunteer->trainings()->count()}}', 2, 3, 4]; // Example data
+        var barColors = ["green", "red", "blue", "orange", "brown"];
 
+        // Calculate the maximum value in yValues
+        var maxValue = Math.max(...yValues);
+        console.log(maxValue);
+
+        // Determine a suitable step size
+        function calculateStepSize(maxValue) {
+            if (maxValue <= 10) {
+                return 1;
+            } else if (maxValue <= 50) {
+                return 5;
+            } else if (maxValue <= 100) {
+                return 10;
+            } else if (maxValue <= 500) {
+                return 50;
+            } else {
+                return 100;
+            }
+        }
+
+        var stepSize = calculateStepSize(maxValue);
+        console.log(stepSize)
+
+        new Chart("myChart", {
+            type: "bar",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: "{{$volunteer->user->name}}'s Performance Chart"
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Event Number"
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: stepSize,
+                            callback: function(value) {
+                                if (Number.isInteger(value)) {
+                                    return value;
+                                }
+                            }
+                        }
+                    }]
+                }
+            }
+
+        });
+
+    });
+</script>
 
 @endsection

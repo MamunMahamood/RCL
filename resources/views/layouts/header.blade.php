@@ -100,7 +100,7 @@
                       </ul>
                   </li> -->
                   <li class="nav-item">
-                      <a href="{{route('volunteer.dashboard')}}" class="nav-link {{ Request::segment(2) == 'dashboard'? 'active' : '' }}">
+                      <a href="{{route('volunteer.dashboard')}}" class="nav-link {{ Request::segment(2) == 'profile'? 'active' : '' }}">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
                               Volunteer Profile
@@ -108,8 +108,9 @@
                           </p>
                       </a>
                   </li>
+                  @if(Auth::user()->is_admin == 2)
                   <li class="nav-item">
-                      <a href="{{route('dashboard')}}" class="nav-link">
+                      <a href="{{route('dashboard')}}" class="nav-link {{ Request::segment(2) == 'dashboard'? 'active' : '' }}">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
                               Dashboard
@@ -117,8 +118,9 @@
                           </p>
                       </a>
                   </li>
-                  <li class="nav-item menu-open">
-                      <a href="#" class="nav-link {{ Request::segment(3) == 'trainings'? 'active' : '' }}">
+                  @endif
+                  <li class="nav-item {{ Request::segment(3) == 'volunteers' || Request::segment(3) == 'trainers'? 'menu-open' : '' }}">
+                      <a href="#" class="nav-link {{ Request::segment(3) == 'volunteers' || Request::segment(3) == 'trainers'? 'active' : '' }}">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
                               Leader Board
@@ -132,15 +134,18 @@
                                   <p>Volunteer Leader Board</p>
                               </a>
                           </li>
+                          @if(Auth::user()->is_admin === 2)
                           <li class="nav-item">
-                              <a href="./index2.html" class="nav-link">
+                              <a href="{{route('trainer.index')}}" class="nav-link {{ Request::segment(3) == 'trainers'? 'active' : '' }}">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Trainer Leader Board</p>
                               </a>
                           </li>
+                          @endif
                       </ul>
                   </li>
-                  <li class="nav-item menu-open">
+                  @if(Auth::user()->is_admin === 2)
+                  <li class="nav-item {{ Request::segment(3) == 'trainings'? 'menu-open' : '' }}">
                       <a href="#" class="nav-link {{ Request::segment(3) == 'trainings'? 'active' : '' }}">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
@@ -169,37 +174,11 @@
                           </li>
                       </ul>
                   </li>
-                  <li class="nav-item menu-open">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fas fa-user"></i>
-                          <p>
-                              Users
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="{{route('units')}}" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Volunteers Section</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="{{route('trainer.index')}}" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Trainers Section</p>
-                              </a>
-                          </li>
-                          <!-- <li class="nav-item">
-                              <a href="./index3.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Dashboard v3</p>
-                              </a>
-                          </li> -->
-                      </ul>
-                  </li>
-                  <li class="nav-item menu-open">
-                      <a href="#" class="nav-link">
+                  @endif
+                 
+                 @if(Auth::user()->is_admin === 2)
+                 <li class="nav-item {{ Request::segment(3) == 'units'? 'menu-open' : '' }}">
+                      <a href="#" class="nav-link {{ Request::segment(3) == 'units'? 'active' : '' }}">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
                               System
@@ -208,7 +187,7 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="{{route('units')}}" class="nav-link">
+                              <a href="{{route('units')}}" class="nav-link {{ Request::segment(3) == 'units'? 'active' : '' }}">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Unit Section</p>
                               </a>
@@ -227,6 +206,7 @@
                           </li> -->
                       </ul>
                   </li>
+                 @endif
 
 
               </ul>
